@@ -20,7 +20,7 @@ type AppController struct {
 }
 
 // APP 安装详情
-func (c *AppController) Detail()  {
+func (c *AppController) Detail() {
 	appId, _ := strconv.Atoi(c.Ctx.Input.Param(":id"))
 	appObj, _ := models.NewApps().Find(appId)
 
@@ -28,15 +28,24 @@ func (c *AppController) Detail()  {
 	c.renderData("appObj", appObj)
 	c.renderData("userAgent", userAgent)
 	c.renderData("weChat", strings.Contains(userAgent, "MicroMessenger"))
-	c.renderData("currentLink", utils.GetHttpsUrl() + c.Ctx.Request.RequestURI)
+	c.renderData("currentLink", utils.GetHttpsUrl()+c.Ctx.Request.RequestURI)
 
 	c.loadTmpl()
 }
 
 // APP 列表
 func (c *AppController) Apps() {
-	listApps, total, _ := models.NewApps().ListApps()
-	//c.renderData("host", utils.GetHttpsUrl())
+	pageSize := 5
+	currentPage, _ := c.GetInt("page", 1)
+
+	listApps, total, _ := models.NewApps().ListApps(currentPage, pageSize)
+	if total > 0 {
+		paper := utils.NewPagination(c.Ctx.Request, int(total), pageSize, "")
+		c.renderData("paper", paper.HtmlPages())
+	} else {
+		c.renderData("paper", "")
+	}
+
 	c.renderData("host", utils.GetHttpUrl())
 	c.renderData("listApps", listApps)
 	c.renderData("total", total)
@@ -63,7 +72,7 @@ func (c *AppController) Upload() {
 		Type:          appInfo.Type,
 		Icon:          iconPath,
 		Plist:         appFilePath,
-		Size :         appInfo.Size,
+		Size:          appInfo.Size,
 		CreatedAt:     utils.Timestamp(),
 		UpdatedAt:     utils.Timestamp(),
 	}
@@ -74,16 +83,16 @@ func (c *AppController) Upload() {
 		c.JsonError(err.Error(), 500)
 	}
 
-	c.JsonSuccess(map[string] interface{} {
-		"id": appId,
-		"extension" : appInfo.Extension,
-		"size": appInfo.Size,
-		"time": time.Now().Unix(),
-	},"")
+	c.JsonSuccess(map[string]interface{}{
+		"id":        appId,
+		"extension": appInfo.Extension,
+		"size":      appInfo.Size,
+		"time":      time.Now().Unix(),
+	}, "")
 }
 
 // 下载安装应用
-func (c *AppController) Install()  {
+func (c *AppController) Install() {
 	c.Prepare()
 	appId, _ := strconv.Atoi(c.Ctx.Input.Param(":id"))
 	appObj, err := models.NewApps().Find(appId)
@@ -98,7 +107,7 @@ func (c *AppController) Install()  {
 			c.JsonError("当前请求非 HTTPS 无法执行安装", 500)
 		}
 
-		c.Ctx.Redirect(302, "itms-services://?action=download-manifest&url=" + appUrl)
+		c.Ctx.Redirect(302, "itms-services://?action=download-manifest&url="+appUrl)
 	}
 
 	c.Ctx.Output.Header("location", appUrl)
@@ -110,9 +119,9 @@ func (c *AppController) getStorePath() string {
 	//创建目录
 	uploadDir := "storage/upload/" + time.Now().Format("2006/01/")
 
-	_,err := os.Stat(uploadDir)
+	_, err := os.Stat(uploadDir)
 	if err != nil {
-		err = os.MkdirAll( uploadDir , os.ModePerm)
+		err = os.MkdirAll(uploadDir, os.ModePerm)
 
 		if err != nil {
 			c.JsonError(err.Error(), 500)
@@ -125,9 +134,9 @@ func (c *AppController) getStorePath() string {
 // 获取上传文件名 自定义后缀
 func (c *AppController) getStoreName(ext string) string {
 	rand.Seed(time.Now().UnixNano())
-	randNum := fmt.Sprintf("%d", rand.Intn(9999)+1000 )
-	hashName := md5.Sum( []byte( time.Now().Format("2006_01_02_15_04_") + randNum ) )
-	fileName := fmt.Sprintf("%x",hashName) + "." + ext
+	randNum := fmt.Sprintf("%d", rand.Intn(9999)+1000)
+	hashName := md5.Sum([]byte(time.Now().Format("2006_01_02_15_04_") + randNum))
+	fileName := fmt.Sprintf("%x", hashName) + "." + ext
 
 	return fileName
 }
@@ -136,7 +145,7 @@ func (c *AppController) getStoreName(ext string) string {
 func (c *AppController) storeFile() string {
 	appFieldName := "app"
 
-	appFile,appFilePointer,err := c.GetFile(appFieldName)
+	appFile, appFilePointer, err := c.GetFile(appFieldName)
 	if err != nil {
 		c.JsonError("上传文件不存在", 500)
 	}
@@ -151,7 +160,7 @@ func (c *AppController) storeFile() string {
 		"IPA": true,
 	}
 
-	if _,err:=allowExpMap[extFile];!err{
+	if _, err := allowExpMap[extFile]; !err {
 		c.JsonError("文件符合上传要求", 500)
 	}
 
@@ -168,7 +177,7 @@ func (c *AppController) storeFile() string {
 // 保存应用图标
 func (c *AppController) storeAppIcon(appInfo *utils.AppInfo) (imagePath string) {
 	imagePath = c.getStorePath() + c.getStoreName("png")
-	imageFile,_ := os.Create(imagePath)
+	imageFile, _ := os.Create(imagePath)
 	err := jpeg.Encode(imageFile, appInfo.Icon, nil)
 
 	if err != nil {
@@ -182,7 +191,7 @@ func (c *AppController) storeAppIcon(appInfo *utils.AppInfo) (imagePath string) 
 func (c *AppController) storeIpaPlist(appInfo *utils.AppInfo, appFilePath string, iconPath string) (plistPath string) {
 	fmt.Println("store ipa plist")
 	plistPath = c.getStorePath() + c.getStoreName("plist")
-	plistFile,_ := os.Create(plistPath)
+	plistFile, _ := os.Create(plistPath)
 	defer plistFile.Close()
 
 	host := utils.GetHttpsUrl() + "/"
@@ -205,8 +214,8 @@ func (c *AppController) storeIpaPlist(appInfo *utils.AppInfo, appFilePath string
 			c.JsonError("plist 文件读取失败", 500)
 		}
 
-		newLine := strings.Replace(string(line), "{ipa}", host + appFilePath, -1)
-		newLine = strings.Replace(newLine, "{icon}", host + iconPath, -1)
+		newLine := strings.Replace(string(line), "{ipa}", host+appFilePath, -1)
+		newLine = strings.Replace(newLine, "{icon}", host+iconPath, -1)
 		newLine = strings.Replace(newLine, "{bid}", appInfo.BundleId, -1)
 		newLine = strings.Replace(newLine, "{name}", appInfo.Name, -1)
 

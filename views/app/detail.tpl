@@ -1,11 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-	<meta charset="<?php echo IN_CHARSET; ?>">
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-	<meta name="keywords" content="<?php echo IN_KEYWORDS; ?>">
-	<meta name="description" content="<?php echo IN_DESCRIPTION; ?>">
-	<title><?php echo $row['in_name']; ?> - <?php echo IN_NAME; ?></title>
 	<link href="/static/app/download.css" rel="stylesheet">
 	<style type="text/css">.wechat_tip, .wechat_tip > i {
 			position: absolute;
@@ -117,7 +113,7 @@
 		</header>
 
 		<div class="footer">内测平台，请自行甄别应用风险！如有问题可通过邮件反馈。
-			<a class="one-key-report" href="mailto:<?php echo IN_MAIL; ?>">联系我们</a>
+			<a class="one-key-report" href="mailto:{{.Email}}">联系我们</a>
 		</div>
 	</div>
 </div>

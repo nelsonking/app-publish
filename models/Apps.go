@@ -34,11 +34,14 @@ func (app *Apps) AddApp(appData *Apps) (id int64, error error) {
 	return
 }
 
-func (app *Apps) ListApps() (appList []*Apps, totalCount int64, err error) {
+func (app *Apps) ListApps(currentPage int, pageSize int) (appList []*Apps, totalCount int64, err error) {
 	o := orm.NewOrm()
 
-	query := o.QueryTable(new (Apps))
-	_, err = query.OrderBy("-id").All(&appList)
+	query := o.QueryTable(new(Apps))
+	offset := (currentPage - 1) * pageSize
+
+	_, err = query.OrderBy("-id").Offset(offset).Limit(pageSize).All(&appList)
+
 	totalCount, err = query.Count()
 
 	return
@@ -47,7 +50,7 @@ func (app *Apps) ListApps() (appList []*Apps, totalCount int64, err error) {
 func (app *Apps) Find(id int, cols ...string) (*Apps, error) {
 	o := orm.NewOrm()
 
-	if err := o.QueryTable(new (Apps)).Filter("id", id).One(app, cols ...); err != nil {
+	if err := o.QueryTable(new(Apps)).Filter("id", id).One(app, cols...); err != nil {
 		return app, err
 	}
 

@@ -2,7 +2,7 @@
 
 * 支持 Android 应用 和 iOS 应用
 * iOS 应用安装需要使用 https 协议
-
+* 需要使用代理转发层做 https 服务 eg: Nginx
 
 ## 部署方式
 ```bash
@@ -39,4 +39,7 @@ db_password = gaoyansing
 create database app_publish default character set utf8mb4 collate utf8mb4_unicode_ci;
 use app_publish;
 source < ~/path/sql.sql
+
+# 运行程序
+# 配置 Nginx 转发 (如果不做iOS应用分发则普通端口运行即可)
 ```

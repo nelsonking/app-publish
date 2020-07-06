@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-	<meta charset="<?php echo IN_CHARSET; ?>">
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-	<meta name="keywords" content="<?php echo IN_KEYWORDS; ?>">
-	<meta name="description" content="<?php echo IN_DESCRIPTION; ?>">
-	<title><?php echo IN_NAME; ?> - App托管服务分发平台|应用封装|安卓托管|iOS分发|ipa企业签名</title>
+	<title>{{.Host}} - App托管服务分发平台|应用封装|安卓托管|iOS分发|ipa企业签名</title>
 	<link href="/static/index/icons.css" rel="stylesheet">
 	<link href="/static/index/bootstrap.css" rel="stylesheet">
 	<script type="text/javascript" src="/static/pack/layer/jquery.js"></script>
