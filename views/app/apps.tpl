@@ -14,7 +14,7 @@
 	<script type="text/javascript" src="/static/index/profile.js"></script>
 	<script type="text/javascript" src="/static/index/drop.js"></script>
 	<script type="text/javascript">
-		var in_path = '{{.host}}';
+		var in_path = window.location.href;
 		var home_link = '/apps';
 		var in_time = '';
 		var in_upw = '';

@@ -4,3 +4,5 @@
 
 darwin_to_darwin_build.sh
 darwin_to_linux_build.sh
+
+main
