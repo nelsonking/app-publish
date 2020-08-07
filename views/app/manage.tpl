@@ -140,6 +140,6 @@
 	</div>
 </section>
 
-<script type="text/javascript" src="/static/js/list.js"></script>
+<script type="text/javascript" src="/static/js/list.js?day={{.day}}"></script>
 </body>
 </html>

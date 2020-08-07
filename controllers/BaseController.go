@@ -79,6 +79,7 @@ func (c *BaseController) isHttpsRequest() bool {
 func (c *BaseController) autoRenderTplData() {
 	userAgent := c.Ctx.Request.Header.Get("User-Agent")
 
+	c.renderData("day", time.Unix(time.Now().Unix(), 0).Format("060102"))
 	c.renderData("userAgent", userAgent)
 	c.renderData("weChat", strings.Contains(userAgent, "MicroMessenger"))
 	c.renderData("Year", time.Now().Year())

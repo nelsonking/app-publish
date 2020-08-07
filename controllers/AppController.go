@@ -32,9 +32,6 @@ func (c *AppController) Detail() {
 		appObj, _ = models.NewApps().FindRecentByAppCode(appCode)
 	}
 
-	fmt.Println(appObj)
-
-
 	c.renderData("appObj", appObj)
 	c.renderData("currentLink", utils.GetHttpsUrl()+c.Ctx.Request.RequestURI)
 
@@ -71,7 +68,6 @@ func (c *AppController) Apps() {
 		c.JsonError(err.Error(), 500)
 	}
 	listApps, total, _ := models.NewApps().GetMaxAppsByAppByMaxBundleList(minBundleList, currentPage, pageSize)
-	fmt.Println(listApps)
 
 	//listApps, total, _ := models.NewApps().ListApps(currentPage, pageSize)
 	if total > 0 {

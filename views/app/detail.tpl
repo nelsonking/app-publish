@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
 	<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-	<link href="/static/app/download.css" rel="stylesheet">
+	<link href="/static/app/download.css?day={{.day}}" rel="stylesheet">
 	<style type="text/css">.wechat_tip, .wechat_tip > i {
 			position: absolute;
 			right: 10px

@@ -5,14 +5,15 @@
 	<meta http-equiv="x-ua-compatible" content="IE=edge">
 	<meta name="renderer" content="webkit">
 	<title>我的应用 - {{.Host}}</title>
-	<link href="/static/index/icons.css" rel="stylesheet">
 	<link href="/static/index/bootstrap.css" rel="stylesheet">
-	<link href="/static/index/manage.css" rel="stylesheet">
+	<link href="/static/index/icons.css?day={{.day}}" rel="stylesheet">
+	<link href="/static/index/manage.css?day={{.day}}" rel="stylesheet">
 	<script type="text/javascript" src="/static/pack/layer/jquery.js"></script>
 	<script type="text/javascript" src="/static/pack/layer/confirm-lib.js"></script>
 	<script type="text/javascript" src="/static/index/uploadify.js"></script>
-	<script type="text/javascript" src="/static/index/profile.js"></script>
 	<script type="text/javascript" src="/static/index/drop.js"></script>
+	<script type="text/javascript" src="/static/index/profile.js?day={{.day}}"></script>
+
 	<script type="text/javascript">
 		var in_path = window.location.origin;
 		var home_link = '/apps';
@@ -37,7 +38,7 @@
 					<nav>
 						<h1 class="navbar-title logo"><span onclick="location.href='/'">{{.Host}}</span></h1>
 						<i class="icon-angle-right"></i>
-						<div class="navbar-title primary-title"><a href="/apps>" class="ng-binding">我的应用</a></div>
+						<div class="navbar-title primary-title"><a href="/apps" class="ng-binding">我的应用</a></div>
 					</nav>
 				</div>
 			</div>

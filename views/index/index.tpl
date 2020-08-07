@@ -8,7 +8,7 @@
 	<script type="text/javascript" src="/static/pack/layer/jquery.js"></script>
 </head>
 <body>
-<link href="/static/index/home.css" rel="stylesheet">
+<link href="/static/index/home.css?day={{.day}}" rel="stylesheet">
 
 <nav class="navbar navbar-transparent" role="navigation">
 	<div class="navbar-header">
