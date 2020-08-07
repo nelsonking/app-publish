@@ -13,3 +13,9 @@ CREATE TABLE `apps` (
   `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- 2020/08/07
+ALTER TABLE `apps`
+ADD COLUMN `app_code` varchar(255) NOT NULL DEFAULT '' COMMENT '应用唯一编码' AFTER `name`;
+
+update apps set app_code = SUBSTR(md5(bundle_id), 9,16) where id <= 12

@@ -283,7 +283,8 @@
 }
 
 .icon-android:before {
-    content: "\e633"
+    content: "\e633";
+    color: green;
 }
 
 .icon-trash:before {
@@ -295,7 +296,8 @@
 }
 
 .icon-apple:before {
-    content: "\e636"
+    content: "\e636";
+    color: red;
 }
 
 .icon-calendar:before {

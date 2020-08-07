@@ -77,6 +77,10 @@ func (c *BaseController) isHttpsRequest() bool {
 
 // 自动渲染模板基础数据
 func (c *BaseController) autoRenderTplData() {
+	userAgent := c.Ctx.Request.Header.Get("User-Agent")
+
+	c.renderData("userAgent", userAgent)
+	c.renderData("weChat", strings.Contains(userAgent, "MicroMessenger"))
 	c.renderData("Year", time.Now().Year())
 	c.renderData("Host", "publish.stage.qjy1.com")
 	c.renderData("Email", "gaoyansing@sina.com")

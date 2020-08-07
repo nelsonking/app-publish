@@ -33,6 +33,7 @@ const (
 
 type AppInfo struct {
 	Name     string
+	AppCode  string
 	BundleId string
 	Version  string
 	Build    string
@@ -148,6 +149,7 @@ func parseApkFile(xmlFile *zip.File) (*AppInfo, error) {
 
 	info := new(AppInfo)
 	info.BundleId = manifest.Package
+	info.AppCode = Get16MD5Encode(info.BundleId)
 	info.Version = manifest.VersionName
 	info.Build = manifest.VersionCode
 
@@ -203,6 +205,7 @@ func parseIpaFile(plistFile *zip.File) (*AppInfo, error) {
 	}
 
 	info.BundleId = p.CFBundleIdentifier
+	info.AppCode = Get16MD5Encode(info.BundleId)
 	info.Version = p.CFBundleShortVersion
 	info.Build = p.CFBundleVersion
 

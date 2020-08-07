@@ -144,9 +144,8 @@
 							</table>
 
 							<div class="action">
-								<a class="ng-binding" href="/apps"><i class="icon-pen"></i> 管理</a>
-								<a href="/app/{{$apps.Id}}" target="_blank" class="ng-binding"><i class="icon-eye"></i>
-									预览</a>
+								<a href="/app/manage/{{$apps.AppCode}}" class="ng-binding" href="/apps"><i class="icon-pen"></i> 管理</a>
+								<a href="/app/{{$apps.AppCode}}" target="_blank" class="ng-binding"><i class="icon-eye"></i>预览</a>
 
 								<button class="btn btn-remove ng-scope" onclick="del_app({{$apps.Id}})">
 									<i class="icon icon-trash"></i>

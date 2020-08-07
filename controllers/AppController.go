@@ -21,24 +21,59 @@ type AppController struct {
 
 // APP 安装详情
 func (c *AppController) Detail() {
-	appId, _ := strconv.Atoi(c.Ctx.Input.Param(":id"))
-	appObj, _ := models.NewApps().Find(appId)
+	var appObj *models.Apps
 
-	userAgent := c.Ctx.Request.Header.Get("User-Agent")
+	appId, _ := strconv.Atoi(c.GetString("id", "0"))
+	appCode := c.Ctx.Input.Param(":appCode")
+
+	if appId != 0 {
+		appObj, _ = models.NewApps().Find(appId)
+	} else {
+		appObj, _ = models.NewApps().FindRecentByAppCode(appCode)
+	}
+
+	fmt.Println(appObj)
+
+
 	c.renderData("appObj", appObj)
-	c.renderData("userAgent", userAgent)
-	c.renderData("weChat", strings.Contains(userAgent, "MicroMessenger"))
 	c.renderData("currentLink", utils.GetHttpsUrl()+c.Ctx.Request.RequestURI)
 
 	c.loadTmpl()
 }
+
+// APP 管理
+func (c *AppController) Manage() {
+	appCode := c.Ctx.Input.Param(":appCode")
+	appObj, _ := models.NewApps().FindRecentByAppCode(appCode)
+
+	c.renderData("appObj", appObj)
+	c.renderData("currentLink", utils.GetHttpsUrl()+c.Ctx.Request.RequestURI)
+
+	c.loadTmpl()
+}
+
+// APP 版本列表
+func (c *AppController) List() {
+	appCode := c.Ctx.Input.Param(":appCode")
+	appObjList, _ := models.NewApps().FindAppListByAppCode(appCode)
+
+	c.JsonSuccess(appObjList, "success")
+}
+
 
 // APP 列表
 func (c *AppController) Apps() {
 	pageSize := 5
 	currentPage, _ := c.GetInt("page", 1)
 
-	listApps, total, _ := models.NewApps().ListApps(currentPage, pageSize)
+	minBundleList, err := models.NewApps().MaxDifferentAppId()
+	if err != nil {
+		c.JsonError(err.Error(), 500)
+	}
+	listApps, total, _ := models.NewApps().GetMaxAppsByAppByMaxBundleList(minBundleList, currentPage, pageSize)
+	fmt.Println(listApps)
+
+	//listApps, total, _ := models.NewApps().ListApps(currentPage, pageSize)
 	if total > 0 {
 		paper := utils.NewPagination(c.Ctx.Request, int(total), pageSize, "")
 		c.renderData("paper", paper.HtmlPages())
@@ -66,6 +101,7 @@ func (c *AppController) Upload() {
 
 	app := models.Apps{
 		Name:          appInfo.Name,
+		AppCode:       appInfo.AppCode,
 		BundleId:      appInfo.BundleId,
 		BundleVersion: appInfo.Version,
 		VersionCode:   appInfo.Build,
