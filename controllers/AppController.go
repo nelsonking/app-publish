@@ -22,17 +22,21 @@ type AppController struct {
 // APP 安装详情
 func (c *AppController) Detail() {
 	var appObj *models.Apps
+	var qrCodeStr string
 
 	appId, _ := strconv.Atoi(c.GetString("id", "0"))
 	appCode := c.Ctx.Input.Param(":appCode")
+	qrCodeStr = "app/" + appCode
 
 	if appId != 0 {
 		appObj, _ = models.NewApps().Find(appId)
+		qrCodeStr += fmt.Sprintf("?id=%d", appId)
 	} else {
 		appObj, _ = models.NewApps().FindRecentByAppCode(appCode)
 	}
 
 	c.renderData("appObj", appObj)
+	c.renderData("qrCodeStr", qrCodeStr)
 	c.renderData("currentLink", utils.GetHttpsUrl()+c.Ctx.Request.RequestURI)
 
 	c.loadTmpl()

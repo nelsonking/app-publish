@@ -79,7 +79,7 @@
 							<i class="icon-icon_path bg-path"></i>
 							<span class="icon"><img src="/{{.appObj.Icon}}"/></span>
 							<span class="qrcode">
-								<img src="/tools/qrcode?url=app/{{.appObj.Id}}">
+								<img src="/tools/qrcode?url={{.qrCodeStr}}">
 							</span>
 						</div>
 
