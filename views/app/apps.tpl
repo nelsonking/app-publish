@@ -21,7 +21,7 @@
 		var in_upw = '';
 		var in_uid = 0;
 		var in_id = 0;
-		var in_size = 200;
+		var in_size = 500; // 文件大小限制
 		var remote = {
 			'open': '0',
 			'dir': 'App-oss',

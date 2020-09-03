@@ -64,7 +64,7 @@ func (c *AppController) List() {
 
 // APP 列表
 func (c *AppController) Apps() {
-	pageSize := 5
+	pageSize := 11
 	currentPage, _ := c.GetInt("page", 1)
 
 	minBundleList, err := models.NewApps().MaxDifferentAppId()
