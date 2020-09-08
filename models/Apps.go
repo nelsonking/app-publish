@@ -83,7 +83,7 @@ func (app *Apps) GetMaxAppsByAppByMaxBundleList(maxBundleList []*MaxBundle, curr
 	}
 
 	o := orm.NewOrm()
-	maxBundleIdSql := fmt.Sprintf("select * from apps where id in (%s) limit %d offset %d ", idStr, pageSize, offset)
+	maxBundleIdSql := fmt.Sprintf("select * from apps where id in (%s) order by bundle_id, type desc,id desc limit %d offset %d ", idStr, pageSize, offset)
 
 	_,err = o.Raw(maxBundleIdSql).QueryRows(&appList)
 

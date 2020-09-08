@@ -73,7 +73,6 @@ func (c *AppController) Apps() {
 	}
 	listApps, total, _ := models.NewApps().GetMaxAppsByAppByMaxBundleList(minBundleList, currentPage, pageSize)
 
-	//listApps, total, _ := models.NewApps().ListApps(currentPage, pageSize)
 	if total > 0 {
 		paper := utils.NewPagination(c.Ctx.Request, int(total), pageSize, "")
 		c.renderData("paper", paper.HtmlPages())
