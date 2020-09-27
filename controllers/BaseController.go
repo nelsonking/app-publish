@@ -83,7 +83,7 @@ func (c *BaseController) autoRenderTplData() {
 	c.renderData("userAgent", userAgent)
 	c.renderData("weChat", strings.Contains(userAgent, "MicroMessenger"))
 	c.renderData("Year", time.Now().Year())
-	c.renderData("Host", "publish.stage.qjy1.com")
+	c.renderData("Host", c.Ctx.Request.Host)
 	c.renderData("Email", "gaoyansing@sina.com")
 	c.renderData("Icp", "备案中...")
 }
